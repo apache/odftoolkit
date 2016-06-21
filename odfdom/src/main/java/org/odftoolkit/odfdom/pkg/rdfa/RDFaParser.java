@@ -36,9 +36,12 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import net.rootdev.javardfa.Constants;
+import net.rootdev.javardfa.ProfileCollector;
 import net.rootdev.javardfa.Setting;
 import net.rootdev.javardfa.literal.LiteralCollector;
 
+import net.rootdev.javardfa.uri.IRIResolver;
+import net.rootdev.javardfa.uri.URIExtractor10;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 
@@ -60,7 +63,7 @@ class RDFaParser extends net.rootdev.javardfa.Parser {
 
 	protected RDFaParser(JenaSink sink, XMLOutputFactory outputFactory,
 			XMLEventFactory eventFactory, URIExtractor extractor) {
-		super(sink);
+		super(sink, outputFactory, eventFactory, new URIExtractor10(new IRIResolver()), ProfileCollector.EMPTY_COLLECTOR);
 		this.sink = sink;
 		this.eventFactory = eventFactory;
 		this.settings = EnumSet.noneOf(Setting.class);
