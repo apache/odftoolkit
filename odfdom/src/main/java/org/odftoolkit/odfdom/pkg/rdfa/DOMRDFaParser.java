@@ -33,16 +33,22 @@ import org.w3c.dom.Node;
  */
 public class DOMRDFaParser extends RDFaParser {
 
+	private static final XMLOutputFactory DEFAULT_XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
+	private static final XMLEventFactory DEFAULT_XML_EVENT_FACTORY = XMLEventFactory.newInstance();
+
 	public static DOMRDFaParser createInstance(JenaSink sink) {
 		sink.getExtractor().setForSAX(false);
-		return new DOMRDFaParser(sink, XMLOutputFactory.newInstance(),
-				XMLEventFactory.newInstance(), sink.getExtractor());
+		return new DOMRDFaParser(sink, sink.getExtractor());
 	}
 
 	public DOMRDFaParser(JenaSink sink, XMLOutputFactory outputFactory,
 			XMLEventFactory eventFactory, URIExtractor extractor) {
 		super(sink, outputFactory, eventFactory, extractor);
 
+	}
+
+	public DOMRDFaParser(JenaSink sink, URIExtractor extractor) {
+		this(sink, DEFAULT_XML_OUTPUT_FACTORY, DEFAULT_XML_EVENT_FACTORY, extractor);
 	}
 
 	/**
