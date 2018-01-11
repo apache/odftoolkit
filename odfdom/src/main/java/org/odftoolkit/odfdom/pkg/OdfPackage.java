@@ -1585,16 +1585,22 @@ public class OdfPackage implements Closeable {
 	 * @throws java.lang.Exception In case the file could not be saved
 	 */
 	public void insert(URI sourceURI, String internalPath, String mediaType) throws Exception {
-		InputStream is = null;
-		if (sourceURI.isAbsolute()) {
-			// if the URI is absolute it can be converted to URL
-			is = sourceURI.toURL().openStream();
-		} else {
-			// otherwise create a file class to open the stream
-			is = new FileInputStream(sourceURI.toString());
-		}
-		insert(is, internalPath, mediaType);
-	}
+        InputStream is = null;
+        try {
+            if (sourceURI.isAbsolute()) {
+                // if the URI is absolute it can be converted to URL
+                is = sourceURI.toURL().openStream();
+            } else {
+                // otherwise create a file class to open the stream
+                is = new FileInputStream(sourceURI.toString());
+            }
+            insert(is, internalPath, mediaType);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
 
 	/**
 	 * Inserts InputStream into an OdfPackage. An existing file will be replaced.
