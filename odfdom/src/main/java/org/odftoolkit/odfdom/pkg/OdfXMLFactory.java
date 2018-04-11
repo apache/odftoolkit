@@ -152,10 +152,10 @@ public class OdfXMLFactory {
 					c = Class.forName(className);
 					classCache.put(odfName, c);
 				} catch (ClassNotFoundException ex) {
-					// mAlienTypes.add(odfName);
+					mAlienTypes.add(odfName);
 					// all classes are first tring to load and warning is given later
 				} catch (NoClassDefFoundError dex) {
-					//mAlienTypes.add(odfName);
+					mAlienTypes.add(odfName);
 					Logger.getLogger(OdfXMLFactory.class.getName()).log(Level.INFO, "NoClassDefFoundError: " + className, dex.getMessage());
 				}
 			}
