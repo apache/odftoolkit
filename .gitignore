@@ -5,3 +5,10 @@ target/
 *~
 .*sw?
 \#*
+.idea/
+*.iml
+
+# vscode
+.project
+.settings/
+.classpath
