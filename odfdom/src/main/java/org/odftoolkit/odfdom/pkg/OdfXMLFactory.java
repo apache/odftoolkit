@@ -52,6 +52,7 @@ public class OdfXMLFactory {
 	private static Map<OdfName, Class> mElementTypes = new HashMap<OdfName, Class>();
 	private static Map<OdfName, Class> mAttributeTypes = new HashMap<OdfName, Class>();
 	private static Map<String, String> mElementRenames = new HashMap<String, String>();
+	private static Set<OdfName> mAlienTypes = new HashSet<OdfName>();
 	//a set for the element which need to load class from incubator package.
 	private static Set<String> mIncubatorElements = new HashSet<String>();
 	private static final String LOCAL_NAME_DELIMITER = "-";
@@ -116,6 +117,10 @@ public class OdfXMLFactory {
 	}
 
 	private static Class getOdfNodeClass(OdfName odfName, String nodeType, Map<OdfName, Class> classCache, boolean isAttribute) {
+		if (mAlienTypes.contains(odfName)) {
+			return null;
+		}
+
 		Class c = null;
 		String className = "";
 		c = classCache.get(odfName);
@@ -147,8 +152,10 @@ public class OdfXMLFactory {
 					c = Class.forName(className);
 					classCache.put(odfName, c);
 				} catch (ClassNotFoundException ex) {
+					mAlienTypes.add(odfName);
 					// all classes are first tring to load and warning is given later
 				} catch (NoClassDefFoundError dex) {
+					mAlienTypes.add(odfName);
 					Logger.getLogger(OdfXMLFactory.class.getName()).log(Level.INFO, "NoClassDefFoundError: " + className, dex.getMessage());
 				}
 			}
